@@ -27,27 +27,18 @@ class MotionDetection:
 		self._updateImage(image)
 		if not self._ready():
 			return "something wrong here"
-			return None
 		d1 = cv2.absdiff(self.__image1, self.__image0)
 		d2 = cv2.absdiff(self.__image2, self.__image0)
 		result = cv2.bitwise_and(d1, d2)
 		(value, result) = cv2.threshold(result, self._THRESHOLD, 255, cv2.THRESH_BINARY)
 		minx, maxx= self.getRectangle(result)
 		return (maxx - minx)
-		#cv2.rectangle(result, (minx, maxy), (maxx, miny), (0,255,0),3)
-		#cv2.imshow('window', result)
-		#cv2.imshow("Window", self.__image1)
-		#scalar = cv2.sumElems(result)
-		#print " - scalar:", scalar[0], scalar
-		#return scalar
 
 	def getRectangle(self, result):
 		minx, maxx, numChanges = self.WIDTH, 0, 0
 		changedCols = []
 		for num in range(self.WIDTH):
 			test = sum(result[:,num])
-			#if (test <= (3 * 255)):
-			#	result[:,num] = [0 * i for i in range(self.HEIGHT)]
 			if(test >= 4 * 255):
 				numChanges +=1
 				changedCols.append(num)
